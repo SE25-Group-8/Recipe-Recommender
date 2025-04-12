@@ -17,7 +17,7 @@ export default class RecipesDAO {
         try {
             recipes = await conn
                 .db(process.env.RECIPES_NS)
-                .collection("recipe");
+                .collection("recipes");
             ingredients = await conn
                 .db(process.env.RECIPES_NS)
                 .collection("ingredient_list");
