@@ -14,8 +14,16 @@ const RecipeLoading = ()=> {
               .fill("")
               .map((_, i) => (
                 
-                  <Box boxShadow="lg" borderWidth="1px" borderRadius="lg" overflow="hidden"
-                    padding="6" w={"200px"} bg="white">
+                  <Box
+                    key={i}
+                    boxShadow="lg" 
+                    borderWidth="1px" 
+                    borderRadius="lg" 
+                    overflow="hidden"
+                    padding="6" 
+                    w={"200px"} 
+                    bg="white"
+                  >
                     <Center><SkeletonCircle size="20" /></Center>
                     <SkeletonText w={115} mt="4" noOfLines={6} spacing="4" />
                   </Box>
