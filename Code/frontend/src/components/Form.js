@@ -192,8 +192,15 @@ class Form extends Component {
     this.setState({ isModalOpen: false });
   };
 
+  // Event handler for toggling dark mode. 
+  toggleDarkMode = () => {
+    this.setState((prevState) => ({
+      darkMode: !prevState.darkMode,
+    }));
+  };
+
   render() {
-    const { isLoading, generatedRecipe, isModalOpen } = this.state;
+    const { isLoading, generatedRecipe, isModalOpen} = this.state; // Updated to handle dark mode toggling. 
 
     return (
       <>
@@ -209,6 +216,7 @@ class Form extends Component {
           p={5}
         >
           <VStack spacing={"5"} alignItems={"flex-start"}>
+
             <Text fontSize={"larger"} fontWeight={"semibold"}>
               Get A Recipe
             </Text>

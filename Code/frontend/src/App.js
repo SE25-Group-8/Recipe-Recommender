@@ -3,7 +3,7 @@
 Copyright (c) 2025 Ayush Gala, Ayush Pathak, Keyur Gondhalekar */
 
 import React, { Component } from "react";
-import { Tabs, Tab, TabList, TabPanel, TabPanels, Box, Text, Center } from "@chakra-ui/react";
+import { Tabs, Tab, TabList, TabPanel, TabPanels, Box, Text, Center, Switch, Flex} from "@chakra-ui/react"; // Updated to support toggle UIs. 
 import { withAuth0 } from "@auth0/auth0-react";
 import Form from "./components/Form.js";
 import recipeDB from "./apis/recipeDB";
@@ -30,9 +30,17 @@ class App extends Component {
       flag: false,
       isLoading: false,
       isProfileView: false,
-      userData: {}
+      userData: {}, 
+      darkMode: false, // New state added to enable dark mode. 
     };
   }
+
+    // Event handler to toggle dark mode.
+    handleDarkModeToggle = () => {
+      this.setState(prevState => ({
+        darkMode: !prevState.darkMode
+      }));
+    };
 
   handleLogout = () => {
     const { logout } = this.props.auth0;
@@ -167,14 +175,17 @@ class App extends Component {
   };
 
   
-
   render() {
     this.registerUser();
     const { isAuthenticated, user } = this.props.auth0;
-    const { isProfileView, recipeList, recipeByNameList, groceryList, isLoading, userData } = this.state;
+    const { isProfileView, recipeList, recipeByNameList, groceryList, isLoading, userData, darkMode } = this.state; // State updated to support dark mode toggling. 
+
+    // Conditional styling for dark mode. 
+    const appBackgroundStyle = darkMode ? { backgroundColor: '#121212', color: '#ffffff' } : { backgroundColor: '#ffffff', color: '#000000' };
+
     this.registerUser();
     return (
-      <div>
+      <div style = {appBackgroundStyle}> 
         <Nav 
           handleLogout={this.handleLogout} 
           handleBookMarks={this.handleBookMarks} 
@@ -192,13 +203,28 @@ class App extends Component {
             {isProfileView ? (
               <UserProfile handleProfileView={this.handleProfileView} user={user || userData} />
             ) : (
-              <Tabs variant="soft-rounded" colorScheme="green">
-                <TabList ml={10}>
-                  <Tab>Search Recipe</Tab>
-                  <Tab>Add Recipe</Tab>
-                  <Tab>Search Recipe By Name</Tab>
-                  <Tab>Grocery List</Tab> 
-                </TabList>
+
+                <Tabs variant="soft-rounded" colorScheme="green"> 
+
+                  <Flex justify="space-between" align="center" mx={10} my={4}>
+
+                    <TabList ml={10}>
+                      <Tab>Search Recipe</Tab>
+                      <Tab>Add Recipe</Tab>
+                      <Tab>Search Recipe By Name</Tab>
+                      <Tab>Grocery List</Tab> 
+                    </TabList>
+
+                    <Flex align="center">
+                      <Text>Dark Mode</Text>
+                        <Switch 
+                          isChecked={darkMode}  
+                          onChange={this.handleDarkModeToggle}  
+                          ml={3} 
+                        />
+                    </Flex>
+                  </Flex> 
+               
                 <TabPanels>
                   <TabPanel>
                     <Box display="flex">
@@ -211,14 +237,18 @@ class App extends Component {
                     <AddRecipe handleAddRecipe={this.handleAddRecipe} />
                   </TabPanel>
                   <TabPanel>
-                    <SearchByRecipe sendRecipeData={this.handleRecipesByName} />
-                    {isLoading ? <RecipeLoading /> : <RecipeList recipes={recipeByNameList} />}
+                    <Box minHeight="100vh" display="flex" flexDirection="column" justifyContent="flex-start">
+                      <SearchByRecipe sendRecipeData={this.handleRecipesByName} />
+                      {isLoading ? <RecipeLoading /> : <RecipeList recipes={recipeByNameList} />}
+                    </Box>
                   </TabPanel>
                   <TabPanel>
-                    <Box textAlign="center" mb={4}>
-                      <button onClick={this.handleGetGroceryList} style={{ padding: "10px 20px", backgroundColor: "#4CAF50", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
-                        Fetch Grocery List
-                      </button>
+                    <Box minHeight="100vh" display="flex" flexDirection="column" justifyContent="flex-start">
+                      <Box textAlign="center" mb={4}>
+                        <button onClick={this.handleGetGroceryList} style={{ padding: "10px 20px", backgroundColor: "#4CAF50", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
+                          Fetch Grocery List
+                        </button>
+                      </Box>
                     </Box>
                     <GroceryList groceryList={this.state.groceryList} fetchGroceryList={this.handleGetGroceryList} />
                   </TabPanel>
