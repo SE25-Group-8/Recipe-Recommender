@@ -225,6 +225,7 @@ class Form extends Component {
                 items={this.state.ingredient_list}
                 placeholder_inp={"Ingredients"}
                 id_inp={"ingredient"}
+                color = "gray.500 !important"
               />
               <InputRightElement>
                 <Button mt={2} mr={2} onClick={this.addHandler} data-testid='add-btn'>
@@ -238,6 +239,7 @@ class Form extends Component {
                 items={this.state.cuisine_list}
                 placeholder_inp={"Cuisine"}
                 id_inp={"cuisine"}
+                color = "gray.500 !important"
               />
             </InputGroup>
             <InputGroup variant={"filled"}>
