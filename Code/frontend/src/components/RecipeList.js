@@ -8,12 +8,14 @@ import {
   ModalOverlay, ModalHeader, ModalFooter, ModalContent,
   Box, SimpleGrid, Text, Button, Heading, UnorderedList,
   OrderedList, ListItem, Link, Code, Divider, InputGroup,
-  Input, InputRightElement, VStack
+  Input, InputRightElement, VStack,
+  useToast
 } from "@chakra-ui/react";
 import RecipeCard from "./RecipeCard";
 import {FaPaperPlane} from "react-icons/fa"
 import recipeDB from "../apis/recipeDB";
 import ReactMarkdown from "react-markdown";
+import { CopyIcon } from '@chakra-ui/icons';
 
 // Component to handle all the recipes
 const RecipeList = ({ recipes }) => {
@@ -22,6 +24,8 @@ const RecipeList = ({ recipes }) => {
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiResponse, setAiResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const toast = useToast();
 
   const youtube_videos = `https://www.youtube.com/results?search_query=${currentRecipe["TranslatedRecipeName"]}`;
 
@@ -115,6 +119,32 @@ const RecipeList = ({ recipes }) => {
     }
   };
 
+  const CopyTextBtn = ({type,text}) => {
+    const handleCopy = () => {
+      const formattedText = currentRecipe.TranslatedRecipeName +" " + type + "\n\n" + text
+      navigator.clipboard.writeText(formattedText);
+      toast({
+        title: "Copied!",
+        description: `${type} copied to clipboard.`,
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+
+    return <Button 
+      size="xs" 
+      bg="green.100"
+      ml={2} 
+      onClick={handleCopy}
+      leftIcon={<CopyIcon />}
+      colorScheme="green" 
+      variant="outline"
+    >
+      Copy
+    </Button>
+  }
+
   return (
     <>
       <Box
@@ -171,10 +201,22 @@ const RecipeList = ({ recipes }) => {
                 </Text>
               </Box>
             </Flex>
-            <Text>
-              <Text as={"b"}>Instructions: </Text> {currentRecipe["TranslatedInstructions"]}
+            <Text mt={4}>
+              <Flex align="center">
+                <Text as={"b"}>Ingredients: </Text> 
+                <CopyTextBtn type="Ingredients" text={currentRecipe["TranslatedIngredients"]}/>
+              </Flex>
+              <Text>{currentRecipe["TranslatedIngredients"]} </Text>
             </Text>
-            <Text color={"blue"}>
+            <Text mt={4}>
+              
+              <Flex align="center">
+                <Text as={"b"}>Instructions: </Text> 
+                <CopyTextBtn type="Instructions" text={currentRecipe["TranslatedInstructions"]}/>
+              </Flex>
+              <Text>{currentRecipe["TranslatedInstructions"]}</Text> 
+            </Text>
+            <Text color={"blue"} mt={4}>
               <Text color={"black"} as={"b"}>
                 Video Url:{" "}
               </Text>
