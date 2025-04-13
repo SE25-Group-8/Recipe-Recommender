@@ -192,8 +192,15 @@ class Form extends Component {
     this.setState({ isModalOpen: false });
   };
 
+  // Event handler for toggling dark mode. 
+  toggleDarkMode = () => {
+    this.setState((prevState) => ({
+      darkMode: !prevState.darkMode,
+    }));
+  };
+
   render() {
-    const { isLoading, generatedRecipe, isModalOpen } = this.state;
+    const { isLoading, generatedRecipe, isModalOpen} = this.state; // Updated to handle dark mode toggling. 
 
     return (
       <>
@@ -209,6 +216,7 @@ class Form extends Component {
           p={5}
         >
           <VStack spacing={"5"} alignItems={"flex-start"}>
+
             <Text fontSize={"larger"} fontWeight={"semibold"}>
               Get A Recipe
             </Text>
@@ -217,6 +225,7 @@ class Form extends Component {
                 items={this.state.ingredient_list}
                 placeholder_inp={"Ingredients"}
                 id_inp={"ingredient"}
+                color = "gray.500 !important"
               />
               <InputRightElement>
                 <Button mt={2} mr={2} onClick={this.addHandler} data-testid='add-btn'>
@@ -230,6 +239,7 @@ class Form extends Component {
                 items={this.state.cuisine_list}
                 placeholder_inp={"Cuisine"}
                 id_inp={"cuisine"}
+                color = "gray.500 !important"
               />
             </InputGroup>
             <InputGroup variant={"filled"}>
