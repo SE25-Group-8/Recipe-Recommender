@@ -16,6 +16,8 @@ import {FaPaperPlane} from "react-icons/fa"
 import recipeDB from "../apis/recipeDB";
 import ReactMarkdown from "react-markdown";
 import { CopyIcon } from '@chakra-ui/icons';
+import { IoVolumeMute,IoVolumeHigh } from "react-icons/io5";
+import AudioInstructions from "./AudioInstructions";
 
 // Component to handle all the recipes
 const RecipeList = ({ recipes }) => {
@@ -24,6 +26,7 @@ const RecipeList = ({ recipes }) => {
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiResponse, setAiResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showAudioInstructions, setShowAudioInstructions] = useState(false)
 
   const toast = useToast();
 
@@ -210,10 +213,26 @@ const RecipeList = ({ recipes }) => {
             </Text>
             <Text mt={4}>
               
-              <Flex align="center">
+              <Flex align="center"> 
                 <Text as={"b"}>Instructions: </Text> 
                 <CopyTextBtn type="Instructions" text={currentRecipe["TranslatedInstructions"]}/>
+                <Button 
+                  size="xs" 
+                  bg={showAudioInstructions ? "red.100" : "green.100"}
+                  ml={2} 
+                  onClick={()=>{
+                    setShowAudioInstructions(!showAudioInstructions)
+                  }}
+                  leftIcon={showAudioInstructions?<IoVolumeMute />:<IoVolumeHigh />}
+                  colorScheme={showAudioInstructions? "red":'green'}
+                  variant="outline"
+                >
+                  {showAudioInstructions ? "Close Audio Instructions" : "Play Instructions" }
+                </Button>
               </Flex>
+
+              <AudioInstructions isVisible={showAudioInstructions} />
+
               <Text>{currentRecipe["TranslatedInstructions"]}</Text> 
             </Text>
             <Text color={"blue"} mt={4}>
