@@ -118,7 +118,7 @@ class Form extends Component {
         {item}
       </Badge>
     ));
-    return <ul class="addedIngredientList">{list_items}</ul>;
+    return <ul className="addedIngredientList">{list_items}</ul>;
   };
 
   addHandler = (event) => {

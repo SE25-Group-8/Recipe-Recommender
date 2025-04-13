@@ -77,7 +77,7 @@ export default function Nav(props) {
                   minW={0}>
                   <Avatar
                     size={'sm'}
-                    src={user?.picture || 'https://avatars.dicebear.com/api/male/username.svg'}
+                    src={user?.picture || 'https://api.dicebear.com/7.x/adventurer/svg?seed=username'}
                   />
                 </MenuButton>
                 <MenuList alignItems={'center'}>
@@ -85,7 +85,7 @@ export default function Nav(props) {
                   <Center>
                     <Avatar
                       size={'xl'}
-                      src={user?.picture || 'https://avatars.dicebear.com/api/male/username.svg'}
+                      src={user?.picture || 'https://api.dicebear.com/7.x/adventurer/svg?seed=username'}
                     />
                   </Center>
                   <br />

@@ -26,10 +26,10 @@ const Recipe = (recipe) => {
     recipe.recipe["TranslatedRecipeName"];
   // mapping each ingredient to be displayes as a list item
   ingredients_seperated = ingredients_seperated.map((ingredient) => (
-    <li class="recipe_ingredient_item"> {ingredient}</li>
+    <li className="recipe_ingredient_item"> {ingredient}</li>
   ));
   restaurant_location = restaurant_location.map((restaurantitem) => (
-    <li class="recipe_restaurant_item"> {restaurantitem}</li>
+    <li className="recipe_restaurant_item"> {restaurantitem}</li>
   ));
   <p>{translated_instruction}</p>;
 
@@ -51,19 +51,19 @@ const Recipe = (recipe) => {
           <p className="card.text">
             <h3>Ingredients: </h3>
             <br />
-            <ul class="result_ingredients"> {ingredients_seperated} </ul>
+            <ul className="result_ingredients"> {ingredients_seperated} </ul>
             <h3>Cooking Time (in Mins): </h3>
-            <ul class="result_cookingtime"> {cooking_time} </ul>
+            <ul className="result_cookingtime"> {cooking_time} </ul>
             <h3>Diet Type: </h3>
-            <ul class="result_diettype"> {diet_type} </ul>
+            <ul className="result_diettype"> {diet_type} </ul>
             <h3>Recipe Rating: </h3>
-            <ul class="result_reciperating"> {recipe_rating} </ul>
+            <ul className="result_reciperating"> {recipe_rating} </ul>
             <h3>Restaurants: </h3>
             <br />
-            <ul class="result_restaurants"> {restaurant_location} </ul>
+            <ul className="result_restaurants"> {restaurant_location} </ul>
             <h3>Instructions: </h3>
             <br />
-            <ol class="result_instructions"> {translated_instruction} </ol>
+            <ol className="result_instructions"> {translated_instruction} </ol>
             <h3>Videos: </h3>
             <a href={youtube_videos}> {youtube_videos} </a>
             <br />
