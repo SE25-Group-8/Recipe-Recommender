@@ -231,7 +231,7 @@ const RecipeList = ({ recipes }) => {
                 </Button>
               </Flex>
 
-              <AudioInstructions isVisible={showAudioInstructions} />
+              <AudioInstructions isVisible={showAudioInstructions} instructions={currentRecipe["TranslatedInstructions"]}/>
 
               <Text>{currentRecipe["TranslatedInstructions"]}</Text> 
             </Text>
