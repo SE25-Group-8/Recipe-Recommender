@@ -8,12 +8,16 @@ import {
   ModalOverlay, ModalHeader, ModalFooter, ModalContent,
   Box, SimpleGrid, Text, Button, Heading, UnorderedList,
   OrderedList, ListItem, Link, Code, Divider, InputGroup,
-  Input, InputRightElement, VStack
+  Input, InputRightElement, VStack,
+  useToast
 } from "@chakra-ui/react";
 import RecipeCard from "./RecipeCard";
 import {FaPaperPlane} from "react-icons/fa"
 import recipeDB from "../apis/recipeDB";
 import ReactMarkdown from "react-markdown";
+import { CopyIcon } from '@chakra-ui/icons';
+import { IoVolumeMute,IoVolumeHigh } from "react-icons/io5";
+import AudioInstructions from "./AudioInstructions";
 
 // Component to handle all the recipes
 const RecipeList = ({ recipes }) => {
@@ -22,6 +26,9 @@ const RecipeList = ({ recipes }) => {
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiResponse, setAiResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showAudioInstructions, setShowAudioInstructions] = useState(false)
+
+  const toast = useToast();
 
   const youtube_videos = `https://www.youtube.com/results?search_query=${currentRecipe["TranslatedRecipeName"]}`;
 
@@ -115,6 +122,44 @@ const RecipeList = ({ recipes }) => {
     }
   };
 
+  const CopyTextBtn = ({type,text}) => {
+    const handleCopy = () => {
+
+      let formattedText = "";
+
+      // Format to a bullet list for ingredients
+      if(type=="Ingredients"){
+        formattedText = text
+          .split(",")
+          .map(item => `• ${item.trim()}`)
+          .join("\n");
+      }
+      else formattedText = text;
+
+      const cpliboardText = currentRecipe.TranslatedRecipeName +" " + type + "\n\n" + formattedText
+      navigator.clipboard.writeText(cpliboardText);
+      toast({
+        title: "Copied!",
+        description: `${type} copied to clipboard.`,
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+
+    return <Button 
+      size="xs" 
+      bg="green.100"
+      ml={2} 
+      onClick={handleCopy}
+      leftIcon={<CopyIcon />}
+      colorScheme="green" 
+      variant="outline"
+    >
+      Copy
+    </Button>
+  }
+
   return (
     <>
       <Box
@@ -172,20 +217,45 @@ const RecipeList = ({ recipes }) => {
               </Box>
             </Flex>
 
-            {currentRecipe.TranslatedIngredients && (
-              <Box ml={1}>
-                <Text as="b">Ingredients:</Text>
-                <UnorderedList mt={2} ml={4}>
-                  {currentRecipe.TranslatedIngredients.split(",").map((ingredient, index) => (
-                    <ListItem key={index}>{ingredient.trim()}</ListItem>
-                  ))}
-                </UnorderedList>
-              </Box>
-            )}
-
             <Text mt={4}>
-              <Text as={"b"}>Instructions: </Text> {currentRecipe["TranslatedInstructions"]}
+              <Flex align="center">
+                <Text as={"b"}>Ingredients: </Text> 
+                <CopyTextBtn type="Ingredients" text={currentRecipe["TranslatedIngredients"]}/>
+              </Flex>
+              <UnorderedList mt={2} ml={4}>
+                {!!currentRecipe.TranslatedIngredients && currentRecipe.TranslatedIngredients.split(",").map((ingredient, index) => (
+                  <ListItem key={index}>{ingredient.trim()}</ListItem>
+                ))}
+              </UnorderedList>
             </Text>
+            <Box mt={4}>
+              
+              <Flex align="center"> 
+                <Text as={"b"}>Instructions: </Text> 
+                <CopyTextBtn type="Instructions" text={currentRecipe["TranslatedInstructions"]}/>
+                <Button 
+                  size="xs" 
+                  bg={showAudioInstructions ? "red.100" : "green.100"}
+                  ml={2} 
+                  onClick={()=>{
+                    setShowAudioInstructions(!showAudioInstructions)
+                  }}
+                  leftIcon={showAudioInstructions?<IoVolumeMute />:<IoVolumeHigh />}
+                  colorScheme={showAudioInstructions? "red":'green'}
+                  variant="outline"
+                >
+                  {showAudioInstructions ? "Close Audio Instructions" : "Play Instructions" }
+                </Button>
+              </Flex>
+
+              <AudioInstructions isVisible={showAudioInstructions} instructions={currentRecipe["TranslatedInstructions"]}/>
+
+              <Text>{currentRecipe["TranslatedInstructions"]}</Text> 
+            </Box>
+
+
+            
+
 
             <Text color={"blue"} mt={4}>
               <Text color={"black"} as={"b"}>
