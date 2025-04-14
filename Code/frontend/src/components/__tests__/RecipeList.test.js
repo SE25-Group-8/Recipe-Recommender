@@ -451,4 +451,133 @@ jest.mock('.../apis/recipeDB', () => ({
     });
 
 
+    // Ingredients tests
+
+    // Test 1: Modal opens on card click
+    test("should open modal when recipe card is clicked", () => {
+      render(<RecipeList recipes={recipes} />);
+      const cardElement = screen.getByTestId('recipeCard');
+      fireEvent.click(cardElement);
+      const modalElement = screen.getByTestId('recipeModal');
+      expect(modalElement).toBeInTheDocument();
+    });
+    
+    // Test 2: Renders ingredient list when available
+    test("should render ingredients in modal when recipe is clicked", async () => {
+      const testRecipes = [{
+        ...recipes[0],
+        TranslatedIngredients: "Tomato, Onion, Garlic"
+      }];
+      render(<RecipeList recipes={testRecipes} />);
+      fireEvent.click(screen.getByTestId('recipeCard'));
+      await waitFor(() => {
+        const ingredients = screen.getAllByTestId("ingredient");
+        expect(ingredients).toHaveLength(3);
+        expect(ingredients[0]).toHaveTextContent("Tomato");
+        expect(ingredients[1]).toHaveTextContent("Onion");
+        expect(ingredients[2]).toHaveTextContent("Garlic");
+      });
+    });
+    
+    // Test 3: Renders no ingredient list if none provided
+    test("should not render ingredients section if TranslatedIngredients is missing", () => {
+      const testRecipes = [{ ...recipes[0] }];
+      delete testRecipes[0].TranslatedIngredients;
+      render(<RecipeList recipes={testRecipes} />);
+      fireEvent.click(screen.getByTestId('recipeCard'));
+      expect(screen.queryByTestId("ingredient")).not.toBeInTheDocument();
+    });
+    
+    // Test 4: Should split ingredients by comma
+    test("should split ingredients by comma", async () => {
+      const testRecipes = [{
+        ...recipes[0],
+        TranslatedIngredients: "Salt, Pepper, Cumin"
+      }];
+      render(<RecipeList recipes={testRecipes} />);
+      fireEvent.click(screen.getByTestId('recipeCard'));
+      await waitFor(() => {
+        const ingredients = screen.getAllByTestId("ingredient");
+        expect(ingredients.length).toBe(3);
+      });
+    });
+    
+    // Test 5: Should trim spaces from ingredients
+    test("should trim whitespace from ingredient names", async () => {
+      const testRecipes = [{
+        ...recipes[0],
+        TranslatedIngredients: "  Sugar , Flour ,  Oil  "
+      }];
+      render(<RecipeList recipes={testRecipes} />);
+      fireEvent.click(screen.getByTestId('recipeCard'));
+      await waitFor(() => {
+        const ingredients = screen.getAllByTestId("ingredient");
+        expect(ingredients[0]).toHaveTextContent("Sugar");
+        expect(ingredients[1]).toHaveTextContent("Flour");
+        expect(ingredients[2]).toHaveTextContent("Oil");
+      });
+    });
+    
+    // Test 6: Renders correct number of ingredients for long list
+    test("should correctly render long ingredient list", async () => {
+      const ingredients = Array.from({ length: 20 }, (_, i) => `Ingredient${i + 1}`);
+      const testRecipes = [{
+        ...recipes[0],
+        TranslatedIngredients: ingredients.join(", ")
+      }];
+      render(<RecipeList recipes={testRecipes} />);
+      fireEvent.click(screen.getByTestId('recipeCard'));
+      await waitFor(() => {
+        const ingredientEls = screen.getAllByTestId("ingredient");
+        expect(ingredientEls.length).toBe(20);
+      });
+    });
+    
+    // Test 7: Ingredient list appears only after modal opens
+    test("ingredients should not appear before modal is clicked", () => {
+      const testRecipes = [{
+        ...recipes[0],
+        TranslatedIngredients: "Milk, Eggs, Butter"
+      }];
+      render(<RecipeList recipes={testRecipes} />);
+      expect(screen.queryByTestId("ingredient")).not.toBeInTheDocument();
+    });
+    
+    // Test 8: Ingredient list title is shown
+    test("should show 'Ingredients' heading in modal if ingredients exist", () => {
+      const testRecipes = [{
+        ...recipes[0],
+        TranslatedIngredients: "Rice, Tomato, Salt"
+      }];
+      render(<RecipeList recipes={testRecipes} />);
+      fireEvent.click(screen.getByTestId('recipeCard'));
+      const heading = screen.getByText(/ingredients/i);
+      expect(heading).toBeInTheDocument();
+    });
+    
+    // Test 9: Handles empty TranslatedIngredients string
+    test("should not crash if TranslatedIngredients is empty string", () => {
+      const testRecipes = [{
+        ...recipes[0],
+        TranslatedIngredients: ""
+      }];
+      render(<RecipeList recipes={testRecipes} />);
+      fireEvent.click(screen.getByTestId('recipeCard'));
+      expect(screen.queryByTestId("ingredient")).not.toBeInTheDocument();
+    });
+    
+    // Test 10: Handles ingredients with inconsistent spacing
+    test("should handle ingredients with inconsistent spacing and commas", async () => {
+      const testRecipes = [{
+        ...recipes[0],
+        TranslatedIngredients: "  Egg  ,Milk,  Honey ,  Butter "
+      }];
+      render(<RecipeList recipes={testRecipes} />);
+      fireEvent.click(screen.getByTestId('recipeCard'));
+      await waitFor(() => {
+        const ingredients = screen.getAllByTestId("ingredient");
+        expect(ingredients.map(i => i.textContent)).toEqual(["Egg", "Milk", "Honey", "Butter"]);
+      });
+    });
+    
   });
