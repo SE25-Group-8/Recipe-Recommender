@@ -124,8 +124,20 @@ const RecipeList = ({ recipes }) => {
 
   const CopyTextBtn = ({type,text}) => {
     const handleCopy = () => {
-      const formattedText = currentRecipe.TranslatedRecipeName +" " + type + "\n\n" + text
-      navigator.clipboard.writeText(formattedText);
+
+      let formattedText = "";
+
+      // Format to a bullet list for ingredients
+      if(type=="Ingredients"){
+        formattedText = text
+          .split(",")
+          .map(item => `• ${item.trim()}`)
+          .join("\n");
+      }
+      else formattedText = text;
+
+      const cpliboardText = currentRecipe.TranslatedRecipeName +" " + type + "\n\n" + formattedText
+      navigator.clipboard.writeText(cpliboardText);
       toast({
         title: "Copied!",
         description: `${type} copied to clipboard.`,
@@ -204,14 +216,19 @@ const RecipeList = ({ recipes }) => {
                 </Text>
               </Box>
             </Flex>
+
             <Text mt={4}>
               <Flex align="center">
                 <Text as={"b"}>Ingredients: </Text> 
                 <CopyTextBtn type="Ingredients" text={currentRecipe["TranslatedIngredients"]}/>
               </Flex>
-              <Text>{currentRecipe["TranslatedIngredients"]} </Text>
+              <UnorderedList mt={2} ml={4}>
+                {!!currentRecipe.TranslatedIngredients && currentRecipe.TranslatedIngredients.split(",").map((ingredient, index) => (
+                  <ListItem key={index}>{ingredient.trim()}</ListItem>
+                ))}
+              </UnorderedList>
             </Text>
-            <Text mt={4}>
+            <Box mt={4}>
               
               <Flex align="center"> 
                 <Text as={"b"}>Instructions: </Text> 
@@ -234,7 +251,12 @@ const RecipeList = ({ recipes }) => {
               <AudioInstructions isVisible={showAudioInstructions} instructions={currentRecipe["TranslatedInstructions"]}/>
 
               <Text>{currentRecipe["TranslatedInstructions"]}</Text> 
-            </Text>
+            </Box>
+
+
+            
+
+
             <Text color={"blue"} mt={4}>
               <Text color={"black"} as={"b"}>
                 Video Url:{" "}
