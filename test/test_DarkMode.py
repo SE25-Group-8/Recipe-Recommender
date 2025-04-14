@@ -69,3 +69,64 @@ def test_state_is_boolean(app_state):
 def test_dark_mode_manual_set(app_state):
     app_state.darkMode = True
     assert app_state.darkMode is True
+
+def test_toggle_back_and_forth(app_state):
+    app_state.handleDarkModeToggle()
+    app_state.handleDarkModeToggle()
+    app_state.handleDarkModeToggle()
+    assert app_state.darkMode is True
+
+
+def test_toggle_twice_then_set_false(app_state):
+    app_state.handleDarkModeToggle()
+    app_state.handleDarkModeToggle()
+    app_state.darkMode = False
+    assert app_state.darkMode is False
+
+
+def test_manual_override_after_toggle(app_state):
+    app_state.handleDarkModeToggle()
+    app_state.darkMode = False
+    assert app_state.darkMode is False
+
+
+def test_manual_override_then_toggle(app_state):
+    app_state.darkMode = True
+    app_state.handleDarkModeToggle()
+    assert app_state.darkMode is False
+
+
+def test_multiple_instances_independence():
+    a = MockAppState()
+    b = MockAppState()
+    a.handleDarkModeToggle()
+    assert a.darkMode is True
+    assert b.darkMode is False
+
+
+def test_toggle_large_number_odd(app_state):
+    for _ in range(101):
+        app_state.handleDarkModeToggle()
+    assert app_state.darkMode is True
+
+
+def test_toggle_large_number_even(app_state):
+    for _ in range(1000):
+        app_state.handleDarkModeToggle()
+    assert app_state.darkMode is False
+
+
+def test_toggle_and_check_midway(app_state):
+    for i in range(4):
+        app_state.handleDarkModeToggle()
+        expected = i % 2 == 0
+        assert app_state.darkMode is expected
+
+
+def test_dark_mode_strict_comparison_true(app_state):
+    app_state.handleDarkModeToggle()
+    assert app_state.darkMode is True
+
+
+def test_dark_mode_strict_comparison_false(app_state):
+    assert app_state.darkMode is False
