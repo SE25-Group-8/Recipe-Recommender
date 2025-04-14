@@ -220,12 +220,14 @@ class Form extends Component {
             <Text fontSize={"larger"} fontWeight={"semibold"}>
               Get A Recipe
             </Text>
-            <InputGroup variant={"filled"} zIndex={+2}>
+            <InputGroup zIndex={+2}>
               <TypeAheadDropDown
                 items={this.state.ingredient_list}
                 placeholder_inp={"Ingredients"}
                 id_inp={"ingredient"}
-                color = "gray.500 !important"
+                color = {"gray.500"}
+                size = {"lg"}
+                
               />
               <InputRightElement>
                 <Button mt={2} mr={2} onClick={this.addHandler} data-testid='add-btn'>
@@ -234,15 +236,17 @@ class Form extends Component {
               </InputRightElement>
             </InputGroup>
             <HStack direction="row">{this.printHandler()}</HStack>
-            <InputGroup variant={"filled"} zIndex={+1}>
+            <InputGroup zIndex={+1}>
               <TypeAheadDropDown
                 items={this.state.cuisine_list}
                 placeholder_inp={"Cuisine"}
                 id_inp={"cuisine"}
-                color = "gray.500 !important"
+                color = {"gray.500"}
+                size = {"lg"}
+                
               />
             </InputGroup>
-            <InputGroup variant={"filled"}>
+            <InputGroup>
               <Input
                 data-testid="email_id"
                 type="text"
@@ -252,13 +256,13 @@ class Form extends Component {
                 placeholder="Email"
               />
             </InputGroup>
-            <InputGroup variant={"filled"}>
-              <FormLabel htmlFor="email-alerts" mb="0">
+            <InputGroup variant = "filled">
+              <FormLabel htmlFor="email-alerts" mb="0" color = "gray.500">
                 Enable email alert?
                 <Switch ml={2} id="Send_email" name="email" size="md" data-testid='email-switch' />
               </FormLabel>
             </InputGroup>
-            <InputGroup variant={"filled"}>
+            <InputGroup>
               <Input
                 data-testid="max_time"
                 type="number"
@@ -271,7 +275,7 @@ class Form extends Component {
                 }
               />
             </InputGroup>
-            <InputGroup variant={"filled"}>
+            <InputGroup>
               <Input
                 data-testid="type"
                 type="string"

@@ -15,12 +15,13 @@ import {
   Button,
   VStack,
   Textarea,
-  Badge,
+  Badge, 
 } from "@chakra-ui/react";
 import recipeDB from "../apis/recipeDB";
 
 const AddRecipe = () => {
   const toast = useToast();
+
   const [isGenerating, setIsGenerating] = useState(false);
   const [recipe, setRecipe] = useState({
     recipeName: "",
@@ -267,21 +268,21 @@ const AddRecipe = () => {
             <Input type={"URL"} id="imageURL" onChange={handleChange} placeholder={"Image URL"} />
           </HStack>
           <HStack direction="row">
-            <InputGroup variant={"filled"}>
+            <InputGroup>
               <Input type={"text"} marginEnd={"5px"} id="ingredients" placeholder={"Ingredients"} width={"45%"} />
               <Button mr={10} width={"5%"} onClick={addIngredient} _hover={{ bg: 'black', color: "gray.100" }} color={"gray.600"} bg={"green.300"}>Add</Button>
             </InputGroup>
             {ingredientPrintHandler()}
           </HStack>
           <HStack spacing={'5'} alignItems={"flex-start"} >
-            <InputGroup variant={"filled"}>
-              <Input type="text" marginEnd={"5px"} id="restaurant" placeholder={"Restaurant"} width="45%" />
+            <InputGroup>
+              <Input type="text" marginEnd={"5px"} id="restaurant" placeholder={"Restaurant"} width="45%" /> 
               <Button id="restaurantButton" width="5%" mr={10} onClick={addRestaurant} _hover={{ bg: 'black', color: "gray.100" }} color={"gray.600"} bg={"green.300"}>Add</Button>
               {restaurantPrintHandler()}
             </InputGroup>
           </HStack>
-          <HStack spacing={'5'} alignItems={"flex-start"} >
-            <InputGroup variant={"filled"}>
+          <HStack spacing={'5'} alignItems={"flex-start"} > 
+            <InputGroup>
               <Input type="text" marginEnd={"5px"} id="location" placeholder={"Restaurant-Location"} width="45%" />
               <Button id="locationButton" width="5%" mr={10} onClick={addLocation} _hover={{ bg: 'black', color: "gray.100" }} color={"gray.600"} bg={"green.300"}>Add</Button>
               {locationPrintHandler()}
