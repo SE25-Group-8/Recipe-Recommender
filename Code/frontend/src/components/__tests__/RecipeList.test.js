@@ -113,6 +113,17 @@ jest.mock('.../apis/recipeDB', () => ({
         Calories: 'Not Available'
       }
     ];
+
+    const manyRecipes = Array.from({ length: 35 }, (_, index) => ({
+      _id: `${index}`,
+      TranslatedRecipeName: `Recipe ${index + 1}`,
+      TotalTimeInMins: 10,
+      'Recipe-rating': 4,
+      'Diet-type': "Vegetarian",
+      'image-url': "",
+      TranslatedInstructions: "Step 1. Step 2.",
+      TranslatedIngredients: "Salt, Pepper, Tomato",
+    }));
   
     beforeEach(() => {
       jest.clearAllMocks();
@@ -371,4 +382,73 @@ jest.mock('.../apis/recipeDB', () => ({
         expect(submitButton).not.toHaveAttribute('data-loading');
       });
     });
+
+
+    //Pagination Tests
+    afterEach(cleanup);
+
+    test("renders only 15 recipes on first page", () => {
+      render(<RecipeList recipes={manyRecipes} />);
+      const cards = screen.getAllByTestId("recipeCard");
+      expect(cards.length).toBe(15);
+    });
+
+    test("pagination buttons are displayed if recipes.length > 15", () => {
+      render(<RecipeList recipes={manyRecipes} />);
+      expect(screen.getByText("Next")).toBeInTheDocument();
+      expect(screen.getByText("Previous")).toBeInTheDocument();
+    });
+
+    test("does not show pagination if no recipes", () => {
+      render(<RecipeList recipes={[]} />);
+      expect(screen.queryByText("Next")).not.toBeInTheDocument();
+      expect(screen.queryByText("Previous")).not.toBeInTheDocument();
+    });
+
+    test("clicking 'Next' shows the next set of recipes", async () => {
+      render(<RecipeList recipes={manyRecipes} />);
+      fireEvent.click(screen.getByText("Next"));
+      const cards = await screen.findAllByTestId("recipeCard");
+      expect(cards[0]).toHaveTextContent("Recipe 16");
+    });
+
+    test("clicking 'Previous' goes back to previous set of recipes", async () => {
+      render(<RecipeList recipes={manyRecipes} />);
+      fireEvent.click(screen.getByText("Next"));
+      fireEvent.click(screen.getByText("Previous"));
+      const cards = await screen.findAllByTestId("recipeCard");
+      expect(cards[0]).toHaveTextContent("Recipe 1");
+    });
+
+    test("disables 'Previous' button on first page", () => {
+      render(<RecipeList recipes={manyRecipes} />);
+      expect(screen.getByText("Previous")).toBeDisabled();
+    });
+
+    test("disables 'Next' button on last page", async () => {
+      render(<RecipeList recipes={manyRecipes} />);
+      fireEvent.click(screen.getByText("Next")); // Go to page 2 (16-30)
+      fireEvent.click(screen.getByText("Next")); // Go to page 3 (31-35)
+      expect(screen.getByText("Next")).toBeDisabled();
+    });
+
+    test("shows correct pagination text: 1–15 of 35", () => {
+      render(<RecipeList recipes={manyRecipes} />);
+      expect(screen.getByText("Showing 1–15 of 35 recipes")).toBeInTheDocument();
+    });
+
+    test("shows correct pagination text: 16–30 of 35", () => {
+      render(<RecipeList recipes={manyRecipes} />);
+      fireEvent.click(screen.getByText("Next"));
+      expect(screen.getByText("Showing 16–30 of 35 recipes")).toBeInTheDocument();
+    });
+
+    test("shows correct pagination text: 31–35 of 35", () => {
+      render(<RecipeList recipes={manyRecipes} />);
+      fireEvent.click(screen.getByText("Next"));
+      fireEvent.click(screen.getByText("Next"));
+      expect(screen.getByText("Showing 31–35 of 35 recipes")).toBeInTheDocument();
+    });
+
+
   });
