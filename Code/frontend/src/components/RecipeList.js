@@ -32,6 +32,16 @@ const RecipeList = ({ recipes }) => {
 
   const youtube_videos = `https://www.youtube.com/results?search_query=${currentRecipe["TranslatedRecipeName"]}`;
 
+  //Constants used for pagination logic
+  const [currentPage, setCurrentPage] = useState(1);
+  const recipesPerPage = 15;
+  const indexOfLastRecipe = currentPage * recipesPerPage;
+  const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
+  const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
+  const pageStartIndex = indexOfFirstRecipe + 1;
+  const pageEndIndex = Math.min(indexOfLastRecipe, recipes.length);
+  
+
   const handleViewRecipe = (data) => {
     setCurrentRecipe(data);
     setIsOpen(true);
@@ -172,9 +182,37 @@ const RecipeList = ({ recipes }) => {
         width={"70%"}
         p={5}
       >
-        <SimpleGrid spacing={5} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
+      
+        
+        {recipes.length > 15 && ( // Only show page buttons if there are more than one page worth of recipes
+          <>
+            <Flex justify="center" mt={4}>
+              <Button
+                onClick={() => setCurrentPage(currentPage - 1)}
+                isDisabled={currentPage === 1}
+                mr={2}
+              >
+                Previous
+              </Button>
+              <Button
+                onClick={() => setCurrentPage(currentPage + 1)}
+                isDisabled={indexOfLastRecipe >= recipes.length}
+              >
+                Next
+              </Button>
+            </Flex>
+          </>
+        )}
+
+        <Flex justify="flex-end" mt={2} mb={2} pr={4}>
+          <Text fontSize="sm" color="gray.600">
+            Showing {pageStartIndex}–{pageEndIndex} of {recipes.length} recipes
+          </Text>
+        </Flex>
+
+        <SimpleGrid spacing={5} mt={4} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
           {recipes.length !== 0 ? (
-            recipes.map((recipe) => (
+            currentRecipes.map((recipe) => (
               <RecipeCard
                 key={recipe._id}
                 handler={handleViewRecipe}
