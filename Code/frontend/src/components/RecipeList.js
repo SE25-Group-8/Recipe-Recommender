@@ -20,7 +20,7 @@ import { IoVolumeMute,IoVolumeHigh } from "react-icons/io5";
 import AudioInstructions from "./AudioInstructions";
 
 // Component to handle all the recipes
-const RecipeList = ({ recipes }) => {
+const RecipeList = ({ recipes,darkMode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentRecipe, setCurrentRecipe] = useState({});
   const [aiPrompt, setAiPrompt] = useState("");
@@ -215,6 +215,7 @@ const RecipeList = ({ recipes }) => {
             currentRecipes.map((recipe) => (
               <RecipeCard
                 key={recipe._id}
+                darkMode={darkMode}
                 handler={handleViewRecipe}
                 recipe={{
                   ...recipe,
@@ -232,7 +233,11 @@ const RecipeList = ({ recipes }) => {
 
       <Modal size={"6xl"} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent data-testid="recipeModal">
+        <ModalContent 
+          data-testid="recipeModal" 
+          backgroundColor={darkMode?'gray.700':'white'}
+          textColor={darkMode?'whiteAlpha.700':'black'}
+        >
           <ModalHeader>{currentRecipe.TranslatedRecipeName}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
