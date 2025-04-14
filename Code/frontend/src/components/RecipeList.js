@@ -267,7 +267,9 @@ const RecipeList = ({ recipes,darkMode }) => {
               </Flex>
               <UnorderedList mt={2} ml={4}>
                 {!!currentRecipe.TranslatedIngredients && currentRecipe.TranslatedIngredients.split(",").map((ingredient, index) => (
-                  <ListItem key={index}>{ingredient.trim()}</ListItem>
+                  <ListItem data-testid="ingredient" key={index}>
+                    {ingredient.trim()}
+                  </ListItem>
                 ))}
               </UnorderedList>
             </Text>
