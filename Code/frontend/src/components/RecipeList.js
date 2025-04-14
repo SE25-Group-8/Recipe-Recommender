@@ -171,10 +171,23 @@ const RecipeList = ({ recipes }) => {
                 </Text>
               </Box>
             </Flex>
-            <Text>
+
+            {currentRecipe.TranslatedIngredients && (
+              <Box ml={1}>
+                <Text as="b">Ingredients:</Text>
+                <UnorderedList mt={2} ml={4}>
+                  {currentRecipe.TranslatedIngredients.split(",").map((ingredient, index) => (
+                    <ListItem key={index}>{ingredient.trim()}</ListItem>
+                  ))}
+                </UnorderedList>
+              </Box>
+            )}
+
+            <Text mt={4}>
               <Text as={"b"}>Instructions: </Text> {currentRecipe["TranslatedInstructions"]}
             </Text>
-            <Text color={"blue"}>
+
+            <Text color={"blue"} mt={4}>
               <Text color={"black"} as={"b"}>
                 Video Url:{" "}
               </Text>
