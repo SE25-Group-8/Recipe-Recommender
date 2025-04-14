@@ -230,7 +230,7 @@ class App extends Component {
                   <TabPanel>
                     <Box display="flex">
                       <Form sendFormData={this.handleSubmit} />
-                      {isLoading ? <RecipeLoading /> : <RecipeList recipes={recipeList} />}
+                      {isLoading ? <RecipeLoading /> : <RecipeList recipes={recipeList} darkMode={darkMode} />}
                     </Box>
                   </TabPanel>
                   <TabPanel>
