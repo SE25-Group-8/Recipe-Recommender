@@ -221,6 +221,7 @@ class App extends Component {
                           isChecked={darkMode}  
                           onChange={this.handleDarkModeToggle}  
                           ml={3} 
+                          colorScheme="green"
                         />
                     </Flex>
                   </Flex> 
@@ -239,7 +240,7 @@ class App extends Component {
                   <TabPanel>
                     <Box minHeight="100vh" display="flex" flexDirection="column" justifyContent="flex-start">
                       <SearchByRecipe sendRecipeData={this.handleRecipesByName} />
-                      {isLoading ? <RecipeLoading /> : <RecipeList recipes={recipeByNameList} />}
+                      {isLoading ? <RecipeLoading /> : <RecipeList recipes={recipeByNameList} darkMode={darkMode} />}
                     </Box>
                   </TabPanel>
                   <TabPanel>

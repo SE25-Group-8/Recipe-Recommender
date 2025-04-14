@@ -22,7 +22,7 @@ import { ClockIcon, StarIcon, BookmarkIcon } from "lucide-react";
 import recipeDB from "../apis/recipeDB";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const RecipeCard = ({recipe, handler }) => {
+const RecipeCard = ({recipe, handler,darkMode }) => {
   const { isAuthenticated, loginWithRedirect, user } = useAuth0();
   const [isLoading, setIsLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -153,6 +153,8 @@ const RecipeCard = ({recipe, handler }) => {
         boxShadow: "xl",
         cursor: "pointer",
       }}
+      backgroundColor={darkMode?'gray.700':'white'}
+      textColor={darkMode?'whiteAlpha.700':'black'}
     >
       <Box position="relative">
         {!imageError ? (
