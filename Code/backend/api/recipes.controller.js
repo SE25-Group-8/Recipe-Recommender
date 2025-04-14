@@ -186,8 +186,8 @@ export default class RecipesController {
             recipesPerPage,
         });
 
-        console.log("/n/n/n/nrecipesList: ", recipesList);
-        console.log("/n/n/n/n");
+        console.log("recipesList: ", recipesList);
+        //console.log("/n/n/n/n");
 
         let response = {
             recipes: recipesList,
