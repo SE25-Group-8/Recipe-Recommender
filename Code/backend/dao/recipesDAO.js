@@ -171,8 +171,8 @@ export default class RecipesDAO {
             const recipesList1 = await displayCursor.toArray();
             const newreciplist = []
             let recipesList = []
-            console.log("\n\n\nREcipie list is ", recipesList1)
-            console.log("\n\n\nFilters are ", filters)
+            console.log("\n\nRecipe list is ", recipesList1)
+            console.log("\n\nFilters are ", filters)
             for(let i =0;i<recipesList1.length;i++){
                 // if(recipesList1[i].TotalTimeInMins<=filters["maxTime"] && recipesList1[i]["Diet-type"].toLowerCase()===filters["type"].toLowerCase())
                 newreciplist.push(recipesList1[i])
