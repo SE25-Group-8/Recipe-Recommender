@@ -8,12 +8,16 @@ import {
   ModalOverlay, ModalHeader, ModalFooter, ModalContent,
   Box, SimpleGrid, Text, Button, Heading, UnorderedList,
   OrderedList, ListItem, Link, Code, Divider, InputGroup,
-  Input, InputRightElement, VStack
+  Input, InputRightElement, VStack,
+  useToast
 } from "@chakra-ui/react";
 import RecipeCard from "./RecipeCard";
 import {FaPaperPlane} from "react-icons/fa"
 import recipeDB from "../apis/recipeDB";
 import ReactMarkdown from "react-markdown";
+import { CopyIcon } from '@chakra-ui/icons';
+import { IoVolumeMute,IoVolumeHigh } from "react-icons/io5";
+import AudioInstructions from "./AudioInstructions";
 
 // Component to handle all the recipes
 const RecipeList = ({ recipes }) => {
@@ -22,8 +26,21 @@ const RecipeList = ({ recipes }) => {
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiResponse, setAiResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showAudioInstructions, setShowAudioInstructions] = useState(false)
+
+  const toast = useToast();
 
   const youtube_videos = `https://www.youtube.com/results?search_query=${currentRecipe["TranslatedRecipeName"]}`;
+
+  //Constants used for pagination logic
+  const [currentPage, setCurrentPage] = useState(1);
+  const recipesPerPage = 15;
+  const indexOfLastRecipe = currentPage * recipesPerPage;
+  const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
+  const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
+  const pageStartIndex = indexOfFirstRecipe + 1;
+  const pageEndIndex = Math.min(indexOfLastRecipe, recipes.length);
+  
 
   const handleViewRecipe = (data) => {
     setCurrentRecipe(data);
@@ -115,6 +132,44 @@ const RecipeList = ({ recipes }) => {
     }
   };
 
+  const CopyTextBtn = ({type,text}) => {
+    const handleCopy = () => {
+
+      let formattedText = "";
+
+      // Format to a bullet list for ingredients
+      if(type=="Ingredients"){
+        formattedText = text
+          .split(",")
+          .map(item => `• ${item.trim()}`)
+          .join("\n");
+      }
+      else formattedText = text;
+
+      const cpliboardText = currentRecipe.TranslatedRecipeName +" " + type + "\n\n" + formattedText
+      navigator.clipboard.writeText(cpliboardText);
+      toast({
+        title: "Copied!",
+        description: `${type} copied to clipboard.`,
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+
+    return <Button 
+      size="xs" 
+      bg="green.100"
+      ml={2} 
+      onClick={handleCopy}
+      leftIcon={<CopyIcon />}
+      colorScheme="green" 
+      variant="outline"
+    >
+      Copy
+    </Button>
+  }
+
   return (
     <>
       <Box
@@ -127,9 +182,37 @@ const RecipeList = ({ recipes }) => {
         width={"70%"}
         p={5}
       >
-        <SimpleGrid spacing={5} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
+      
+        
+        {recipes.length > 15 && ( // Only show page buttons if there are more than one page worth of recipes
+          <>
+            <Flex justify="center" mt={4}>
+              <Button
+                onClick={() => setCurrentPage(currentPage - 1)}
+                isDisabled={currentPage === 1}
+                mr={2}
+              >
+                Previous
+              </Button>
+              <Button
+                onClick={() => setCurrentPage(currentPage + 1)}
+                isDisabled={indexOfLastRecipe >= recipes.length}
+              >
+                Next
+              </Button>
+            </Flex>
+          </>
+        )}
+
+        <Flex justify="flex-end" mt={2} mb={2} pr={4}>
+          <Text fontSize="sm" color="gray.600">
+            Showing {pageStartIndex}–{pageEndIndex} of {recipes.length} recipes
+          </Text>
+        </Flex>
+
+        <SimpleGrid spacing={5} mt={4} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
           {recipes.length !== 0 ? (
-            recipes.map((recipe) => (
+            currentRecipes.map((recipe) => (
               <RecipeCard
                 key={recipe._id}
                 handler={handleViewRecipe}
@@ -171,10 +254,48 @@ const RecipeList = ({ recipes }) => {
                 </Text>
               </Box>
             </Flex>
-            <Text>
-              <Text as={"b"}>Instructions: </Text> {currentRecipe["TranslatedInstructions"]}
+
+            <Text mt={4}>
+              <Flex align="center">
+                <Text as={"b"}>Ingredients: </Text> 
+                <CopyTextBtn type="Ingredients" text={currentRecipe["TranslatedIngredients"]}/>
+              </Flex>
+              <UnorderedList mt={2} ml={4}>
+                {!!currentRecipe.TranslatedIngredients && currentRecipe.TranslatedIngredients.split(",").map((ingredient, index) => (
+                  <ListItem key={index}>{ingredient.trim()}</ListItem>
+                ))}
+              </UnorderedList>
             </Text>
-            <Text color={"blue"}>
+            <Box mt={4}>
+              
+              <Flex align="center"> 
+                <Text as={"b"}>Instructions: </Text> 
+                <CopyTextBtn type="Instructions" text={currentRecipe["TranslatedInstructions"]}/>
+                <Button 
+                  size="xs" 
+                  bg={showAudioInstructions ? "red.100" : "green.100"}
+                  ml={2} 
+                  onClick={()=>{
+                    setShowAudioInstructions(!showAudioInstructions)
+                  }}
+                  leftIcon={showAudioInstructions?<IoVolumeMute />:<IoVolumeHigh />}
+                  colorScheme={showAudioInstructions? "red":'green'}
+                  variant="outline"
+                >
+                  {showAudioInstructions ? "Close Audio Instructions" : "Play Instructions" }
+                </Button>
+              </Flex>
+
+              <AudioInstructions isVisible={showAudioInstructions} instructions={currentRecipe["TranslatedInstructions"]}/>
+
+              <Text>{currentRecipe["TranslatedInstructions"]}</Text> 
+            </Box>
+
+
+            
+
+
+            <Text color={"blue"} mt={4}>
               <Text color={"black"} as={"b"}>
                 Video Url:{" "}
               </Text>

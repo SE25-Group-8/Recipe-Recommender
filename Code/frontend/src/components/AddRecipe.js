@@ -15,7 +15,8 @@ import {
   Button,
   VStack,
   Textarea,
-  Badge, 
+  Badge,
+  Wrap,
 } from "@chakra-ui/react";
 import recipeDB from "../apis/recipeDB";
 
@@ -171,23 +172,6 @@ const AddRecipe = () => {
       .catch(err => console.log("Error adding recipe:", err));
   };
 
-  const ingredientPrintHandler = () => (
-    <ul className="IngredientList">
-      {recipe.ingredients.map(ingredient => (
-        <Badge
-          key={ingredient} // Add unique key for each item
-          id={ingredient}
-          m={1}
-          _hover={{ cursor: "pointer" }}
-          onClick={ingredientRemoveHandler}
-          colorScheme="green"
-        >
-          {ingredient}
-        </Badge>
-      ))}
-    </ul>
-  );
-
   const ingredientRemoveHandler = (event) => {
     const ingredient = event.target.id;
     const updatedIngredients = recipe.ingredients.filter(item => item !== ingredient);
@@ -197,22 +181,6 @@ const AddRecipe = () => {
     }));
   };
 
-  const restaurantPrintHandler = () => (
-    <ul className="RestaurantList">
-      {recipe.restaurants.map(restaurant => (
-        <Badge
-          key={restaurant} // Add unique key for each item
-          id={restaurant}
-          m={1}
-          _hover={{ cursor: "pointer" }}
-          onClick={restaurantRemoveHandler}
-          colorScheme="green"
-        >
-          {restaurant}
-        </Badge>
-      ))}
-    </ul>
-  );
 
   const restaurantRemoveHandler = (event) => {
     const restaurant = event.target.id;
@@ -223,22 +191,6 @@ const AddRecipe = () => {
     }));
   };
 
-  const locationPrintHandler = () => (
-    <ul className="LocationList">
-      {recipe.locations.map(location => (
-        <Badge
-          key={location} // Add unique key for each item
-          id={location}
-          m={1}
-          _hover={{ cursor: "pointer" }}
-          onClick={locationRemoveHandler}
-          colorScheme="green"
-        >
-          {location}
-        </Badge>
-      ))}
-    </ul>
-  );
 
   const locationRemoveHandler = (event) => {
     const location = event.target.id;
@@ -267,27 +219,66 @@ const AddRecipe = () => {
             <Input type={"URL"} id="recipeURL" onChange={handleChange} placeholder={"Recipe URL"} />
             <Input type={"URL"} id="imageURL" onChange={handleChange} placeholder={"Image URL"} />
           </HStack>
-          <HStack direction="row">
-            <InputGroup>
+          <Box >
+            <InputGroup variant={"filled"}>
               <Input type={"text"} marginEnd={"5px"} id="ingredients" placeholder={"Ingredients"} width={"45%"} />
               <Button mr={10} width={"5%"} onClick={addIngredient} _hover={{ bg: 'black', color: "gray.100" }} color={"gray.600"} bg={"green.300"}>Add</Button>
             </InputGroup>
-            {ingredientPrintHandler()}
-          </HStack>
-          <HStack spacing={'5'} alignItems={"flex-start"} >
-            <InputGroup>
-              <Input type="text" marginEnd={"5px"} id="restaurant" placeholder={"Restaurant"} width="45%" /> 
+            <Wrap mt={3}>
+              {recipe.ingredients.map(ingredient => (
+                <Badge
+                  key={ingredient}
+                  id={ingredient}
+                  m={1}
+                  _hover={{ cursor: "pointer",  bg: "red.100", color: "red.800", borderColor: "red.300", }}
+                  onClick={ingredientRemoveHandler}
+                  colorScheme="green"
+                >
+                  {ingredient}
+                </Badge>
+              ))}
+            </Wrap>
+          </Box>
+          <Box>
+            <InputGroup variant={"filled"}>
+              <Input type="text" marginEnd={"5px"} id="restaurant" placeholder={"Restaurant"} width="45%" />
               <Button id="restaurantButton" width="5%" mr={10} onClick={addRestaurant} _hover={{ bg: 'black', color: "gray.100" }} color={"gray.600"} bg={"green.300"}>Add</Button>
-              {restaurantPrintHandler()}
             </InputGroup>
-          </HStack>
-          <HStack spacing={'5'} alignItems={"flex-start"} > 
-            <InputGroup>
+            <Wrap mt={3}>
+              {recipe.restaurants.map(restaurant => (
+                <Badge
+                  key={restaurant} 
+                  id={restaurant}
+                  m={1}
+                  _hover={{ cursor: "pointer",  bg: "red.100", color: "red.800", borderColor: "red.300", }}
+                  onClick={restaurantRemoveHandler}
+                  colorScheme="green"
+                >
+                  {restaurant}
+                </Badge>
+              ))}
+            </Wrap>
+          </Box>
+          <Box>
+            <InputGroup variant={"filled"}>
               <Input type="text" marginEnd={"5px"} id="location" placeholder={"Restaurant-Location"} width="45%" />
               <Button id="locationButton" width="5%" mr={10} onClick={addLocation} _hover={{ bg: 'black', color: "gray.100" }} color={"gray.600"} bg={"green.300"}>Add</Button>
-              {locationPrintHandler()}
             </InputGroup>
-          </HStack>
+            <Wrap mt={3}>
+              {recipe.locations.map(location => (
+                <Badge
+                  key={location} // Add unique key for each item
+                  id={location}
+                  m={1}
+                  _hover={{ cursor: "pointer",  bg: "red.100", color: "red.800", borderColor: "red.300", }}
+                  onClick={locationRemoveHandler}
+                  colorScheme="green"
+                >
+                  {location}
+                </Badge>
+              ))}
+            </Wrap>
+          </Box>
           {/* <Button width="30%" m="auto" onClick={handleGenerateRecipe} _hover={{ bg: "black", color: "gray.100" }} color="gray.600" bg="green.300" isDisabled={isGenerating}>
             Generate Recipe
           </Button> */}
