@@ -15,13 +15,23 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/SE-Spring2025-G2/Recipe-Recommender/blob/main/LICENSE)
 
 
-## Version 2.0 is out now!
+## Version 2.1 is out now!
 
 ### Check out the cool new features in this demo video! 
-[![Youtube Video](https://img.youtube.com/vi/8ity_VTLJWo/maxresdefault.jpg)](https://youtu.be/8ity_VTLJWo?si=b7lHfuqVITqFtWSi)
+[![Youtube Video](https://img.youtube.com/vi/8ity_VTLJWo/maxresdefault.jpg)](https://www.youtube.com/watch?v=B89QZlRY7fw)
 <br>
 
 ### What's new?
+
+## Version 2.1 Feature List:
+
+**🔊 Voice-Guided Cooking Instructions:** Imagine a cooking assistant that speaks directly to you—hands-free, distraction-free, and seamless. Our voice-guided instructions will turn your kitchen into a smart, interactive cooking space. No more smudging your phone screen with flour-covered fingers! Simply listen and cook with ease, perfect for multitaskers and home chefs alike.
+
+**🌑 Dark Mode:**  Say hello to effortless late-night cooking! Our new Dark Mode will provide a sleek, eye-friendly interface that enhances usability and minimizes strain, making it perfect for evening meal preps and low-light environments. Aesthetic, practical, and user-first—this upgrade makes the app work for every moment of your day.
+
+**📄 Smart Pagination for Lightning-Fast Results:** With over 5000+ recipes in our database, searches for recipes by name or by ingredients can return hundreds of results. We've introduced efficient pagination to speed up API responses and improve user experience. Now, results are fetched in smaller chunks, ensuring faster load times and smoother navigation — even for large result sets!
+
+## Version 2.0 Feature List:
 
 **🎨 A brand new theme:** A fresh green theme, easy on the eyes with great contrast for seamless navigation. The recipe list with pagination ensures smooth scrolling, alongside a new & enhanced search panel!
 
@@ -95,13 +105,7 @@ What's cooking next you ask?
 
 We’re not just refining a recipe recommender app — **we’re redefining the way people cook.** With our upcoming features, we aim to blend innovation, engagement, and convenience, ensuring that every user has a seamless, personalized, and enjoyable cooking experience. These enhancements aren’t just updates; they’re game-changers.
 
-### 🌑 Dark Mode (Week 1)
-Say hello to effortless late-night cooking! Our new Dark Mode will provide a sleek, eye-friendly interface that enhances usability and minimizes strain, making it perfect for evening meal preps and low-light environments. Aesthetic, practical, and user-first—this upgrade makes the app work for every moment of your day.
-
-### 🔊 Voice-Guided Cooking Instructions (Week 2-3)
-Imagine a cooking assistant that speaks directly to you—hands-free, distraction-free, and seamless. Our voice-guided instructions will turn your kitchen into a smart, interactive cooking space. No more smudging your phone screen with flour-covered fingers! Simply listen and cook with ease, perfect for multitaskers and home chefs alike.
-
-### 👤 User Engagement Features (Week 2-4)
+### 👤 User Engagement Features 
 We’re taking recipe discovery to the next level by integrating social interactivity into the app. Users will soon be able to:
 
 ✔ Like, comment, and share their favorite recipes <br>
@@ -111,7 +115,7 @@ We’re taking recipe discovery to the next level by integrating social interact
 
 By introducing community-driven ratings and engagement, we’re making cooking a shared experience, not just a solo task.
 
-### 🥗 Nutrition Tracker (Week 2-4)
+### 🥗 Nutrition Tracker 
 Cooking should be both delicious and nutritious. Our new Nutrition Tracker will provide users with a detailed breakdown of calories, macronutrients, and allergens for every recipe. Whether you’re on a fitness journey, have dietary restrictions, or just want to eat healthier, this feature empowers users to make informed food choices effortlessly.
 
 
@@ -287,18 +291,21 @@ Please see our [CONTRIBUTING.md](/CONTRIBUTING.md) for instructions on how to co
 This project is a collaborative effort by a dedicated team of developers and mentors, working together to enhance and refine its features over multiple iterations. We appreciate the contributions of both current and past members who have played a vital role in shaping this project.  
 
 
-### Contributors for version 2.0
+### Contributors for version 2.1
+
+Akhil Adusumilli <br>
+Atharva Patil <br>
+Ryan Gallagher <br>
+
+
+
+
+### Past Contributors:
 
 Ayush Gala <br>
 Keyur Gondhalekar <br>
 Ayush Pathak
-
-### Past Contributors:
-
-Mullamuri, Venkata Yaswanth <br>
-Gupta, Ayush <br>
-Baddi, Yaswanth <br>
-[etc.](https://github.com/SE-Spring2025-G2/Recipe-Recommender/graphs/contributors)
+[etc.](https://github.com/SE25-Group-8/Recipe-Recommender/graphs/contributors)
 
 ### Project Mentors
 
