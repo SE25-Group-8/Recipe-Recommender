@@ -48,7 +48,7 @@
 ## Table of Contents
 
 - [What is Recipe Recommender?](#what-is-recipe-recommender)
-- [Version 2.0 is out now!](#version-20-is-out-now)
+- [Version 2.1 is out now!](#version-20-is-out-now)
   - [What's new?](#whats-new)
 - [Future Additions: Enhancements, Upgrades, and Bug Fixes](#future-additions-enhancements-upgrades-and-bugfixes)
   - [Dark Mode (Week 1)](#-dark-mode-week-1)
@@ -297,15 +297,12 @@ Akhil Adusumilli <br>
 Atharva Patil <br>
 Ryan Gallagher <br>
 
-
-
-
 ### Past Contributors:
 
 Ayush Gala <br>
 Keyur Gondhalekar <br>
 Ayush Pathak
-[etc.](https://github.com/SE25-Group-8/Recipe-Recommender/graphs/contributors)
+[+More](https://github.com/SE25-Group-8/Recipe-Recommender/graphs/contributors)
 
 ### Project Mentors
 
@@ -320,14 +317,14 @@ If you use this project in your research or applications, please cite it as foll
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-  - family-names: "Gala"
-    given-names: "Ayush"
-  - family-names: "Pathak"
-    given-names: "Ayush"
-  - family-names: "Gondhalekar"
-    given-names: "Keyur"
+  - family-names: "Adusumilli"
+    given-names: "Akhil"
+  - family-names: "Patil"
+    given-names: "Atharva"
+  - family-names: "Gallagher"
+    given-names: "Ryan"
 title: "Saveurs Sélection"
-version: 2.0.0
+version: 2.1.0
 doi: 10.5281/zenodo.14226806
 date-released: 2023-10-19
 url: "https://doi.org/10.5281/zenodo.14226806"
