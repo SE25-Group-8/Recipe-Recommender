@@ -136,7 +136,8 @@ export default class RecipesDAO {
         if (filters) {
             if ("CleanedIngredients" in filters) {
                 var str = "(?i)";
-                for (var i = 0; i < filters["CleanedIngredients"].length; i++) {
+                const ingredients = filters["CleanedIngredients"] || [];
+                for (var i = 0; i < ingredients.length; i++) {
                     const str1 = filters["CleanedIngredients"][i];
                     str += "(?=.*" + str1 + ")";
                 }
